@@ -177,6 +177,62 @@
           }
         },
         "summary": "Get the game with given id"
+      },
+      "delete": {
+        "tags": [
+          "GAMES"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Id of game to be deleted",
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Game deleted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IdError": {
+                    "value": {
+                      "error": "ID must be a whole number: esimene"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Incorrect Id"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NotFound": {
+                    "value": {
+                      "error": "Game Not Found!"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Game not found"
+          }
+        },
+        "summary": "Remove a game"
       }
     }
   },

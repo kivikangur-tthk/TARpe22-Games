@@ -47,26 +47,14 @@ app.post("/games", (req, res) => {
 })
 
 app.get("/games/:id", (req, res) => {
-    const idNumber = parseInt(req.params.id)
-    if (isNaN(idNumber)) {
-        return res.status(400).send({error: `ID must be a whole number: ${req.params.id}`})
-    }
-    const game = games.find(g => g.id === idNumber)
-    if (!game) {
-        return res.status(404).send({error: `Game Not Found!`})
-    }
-    res.send(game)
+    const game = getGame(req,res)
+    if (!game) { return }
+    return res.send(game)
 })
 
 app.delete("/games/:id", (req, res) => {
-    const idNumber = parseInt(req.params.id)
-    if (isNaN(idNumber)) {
-        return res.status(400).send({error: `ID must be a whole number: ${req.params.id}`})
-    }
-    const game = games.find(g => g.id === idNumber)
-    if (!game) {
-        return res.status(404).send({error: `Game Not Found!`})
-    }
+    const game = getGame(req,res)
+    if (!game) { return }
     games.splice(games.indexOf(game), 1)
     return res.status(204).send()
 })
@@ -83,4 +71,18 @@ function getBaseUrl(req) {
 function createId() {
     const maxIdGame = games.reduce((prev, current) => (prev.id > current.id) ? prev : current, 1)
     return maxIdGame.id + 1;
+}
+
+function getGame(req, res) {
+    const idNumber = parseInt(req.params.id)
+    if (isNaN(idNumber)) {
+        res.status(400).send({error: `ID must be a whole number: ${req.params.id}`})
+        return null
+    }
+    const game = games.find(g => g.id === idNumber)
+    if (!game) {
+        res.status(404).send({error: `Game Not Found!`})
+        return null
+    }
+    return game
 }

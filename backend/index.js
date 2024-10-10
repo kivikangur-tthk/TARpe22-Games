@@ -1,9 +1,11 @@
 const port = 8080
 const host = 'localhost'
-const app = require("express")()
+const express = require("express")
+const app = express()
 const swaggerUi = require("swagger-ui-express")
 const swaggerDoc = require("./docs/swagger.json")
 
+app.use(express.json())
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
 app.get("/", (req, res) => {
@@ -25,6 +27,25 @@ app.get("/games", (req, res) => {
     res.send(games.map(({id,name}) => {
          return {id, name}
     }))
+})
+
+function createId() {
+    const maxIdGame = games.reduce((prev, current) => (prev.id > current.id) ? prev : current, 1)
+    return maxIdGame.id + 1;
+}
+
+app.post("/games", (req, res) => {
+    if (!req.body.name || req.body.name.trim().length === 0) {
+        return res.status(400).send({error: "Missing required field 'name'"})
+    }
+    const newPrice = parseFloat(req.body.price);
+    const newGame = {
+        id: createId(),
+        name: req.body.name,
+        price: isNaN(newPrice) ? null : newPrice
+    }
+    games.push(newGame)
+    res.status(201).send(newGame)
 })
 
 app.get("/games/:id", (req, res) => {

@@ -42,6 +42,47 @@
           }
         },
         "summary": "Get all game names"
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Game"
+              },
+              "examples": {
+                "NewGame": {
+                  "value": {
+                    "name": "some text",
+                    "price": 81.47
+                  }
+                },
+                "GameWithoutPrice": {
+                  "value": {
+                    "name": "some text"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "GAMES"
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Add new game"
       }
     },
     "/games/{id}": {

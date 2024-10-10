@@ -29,10 +29,6 @@ app.get("/games", (req, res) => {
     }))
 })
 
-function createId() {
-    const maxIdGame = games.reduce((prev, current) => (prev.id > current.id) ? prev : current, 1)
-    return maxIdGame.id + 1;
-}
 
 app.post("/games", (req, res) => {
     if (!req.body.name || req.body.name.trim().length === 0) {
@@ -46,7 +42,7 @@ app.post("/games", (req, res) => {
     }
     games.push(newGame)
     res.status(201)
-        .location(`http://${host}:${port}/games/${newGame.id}`)
+        .location(`${getBaseUrl(req)}/games/${newGame.id}`)
         .send(newGame)
 })
 
@@ -66,3 +62,12 @@ app.get("/games/:id", (req, res) => {
 app.listen(port, () => {
     console.log(`API up at: http://${host}:${port}`)
 })
+
+function getBaseUrl(req) {
+    return (req.connection && req.connection.encrypted ? 'https' : 'http') + `://${req.headers.host}`
+}
+
+function createId() {
+    const maxIdGame = games.reduce((prev, current) => (prev.id > current.id) ? prev : current, 1)
+    return maxIdGame.id + 1;
+}

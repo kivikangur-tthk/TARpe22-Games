@@ -48,7 +48,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Game"
+                "$ref": "#/components/schemas/NewGame"
               },
               "examples": {
                 "NewGame": {
@@ -74,10 +74,10 @@
           "201": {
             "headers": {
               "location": {
-                "description": "Location of created object",
                 "schema": {
                   "type": "string"
-                }
+                },
+                "description": "Location of created object"
               }
             },
             "content": {
@@ -234,6 +234,24 @@
         },
         "example": {
           "error": "Error message"
+        }
+      },
+      "NewGame": {
+        "description": "Game to be saved",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Must contain atleast one non-whitespace character",
+            "type": "string"
+          },
+          "price": {
+            "format": "float",
+            "description": "",
+            "type": "number"
+          }
         }
       }
     }

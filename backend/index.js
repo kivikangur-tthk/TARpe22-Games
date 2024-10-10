@@ -52,6 +52,20 @@ app.get("/games/:id", (req, res) => {
     return res.send(game)
 })
 
+app.put("/games/:id", (req, res) => {
+    const game = getGame(req,res)
+    if (!game) { return }
+    if (!req.body.name || req.body.name.trim().length === 0) {
+        return res.status(400).send({error: "Missing required field 'name'"})
+    }
+    const newPrice = parseFloat(req.body.price);
+    game.name = req.body.name
+    game.price = isNaN(newPrice) ? null : newPrice
+    return res
+        .location(`${getBaseUrl(req)}/games/${game.id}`)
+        .send(game)
+})
+
 app.delete("/games/:id", (req, res) => {
     const game = getGame(req,res)
     if (!game) { return }

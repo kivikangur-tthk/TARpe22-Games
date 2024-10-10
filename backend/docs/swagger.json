@@ -178,6 +178,42 @@
         },
         "summary": "Get the game with given id"
       },
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewGame"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "GAMES"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Id of the game to be modified",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Modify existing game"
+      },
       "delete": {
         "tags": [
           "GAMES"

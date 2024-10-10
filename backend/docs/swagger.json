@@ -72,6 +72,14 @@
         ],
         "responses": {
           "201": {
+            "headers": {
+              "location": {
+                "description": "Location of created object",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {

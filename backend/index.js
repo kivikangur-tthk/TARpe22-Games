@@ -45,7 +45,9 @@ app.post("/games", (req, res) => {
         price: isNaN(newPrice) ? null : newPrice
     }
     games.push(newGame)
-    res.status(201).send(newGame)
+    res.status(201)
+        .location(`http://${host}:${port}/games/${newGame.id}`)
+        .send(newGame)
 })
 
 app.get("/games/:id", (req, res) => {

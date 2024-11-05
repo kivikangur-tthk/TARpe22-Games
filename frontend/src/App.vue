@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div>
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/">Games</RouterLink>
         <RouterLink to="/players">Players</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
@@ -49,17 +49,21 @@ nav a:first-of-type {
 @media (min-width: 1024px) {
   header {
     display: flex;
-    place-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     padding-right: calc(var(--section-gap) / 2);
   }
 
   nav {
+    display: flex;
+    flex-direction: column;
     text-align: left;
-    margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
     margin-top: 1rem;
+  }
+  nav a {
+    border: 0;
   }
 }
 </style>

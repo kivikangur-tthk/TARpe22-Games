@@ -7,7 +7,7 @@ const app = express()
 const swaggerUi = require("swagger-ui-express")
 
 const swaggerDoc = require("./docs/swagger.json")
-const { db, sync} = require("./db");
+const {sync} = require("./db");
 
 app.use(cors());
 app.use(express.json())
@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 })
 
 require("./routes/gameRoutes")(app)
+require("./routes/playerRoutes")(app)
 
 app.listen(port, async () => {
     if (process.env.SYNC === "true") { await sync(); }

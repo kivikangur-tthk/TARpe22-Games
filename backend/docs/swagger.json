@@ -270,6 +270,269 @@
         },
         "summary": "Remove a game"
       }
+    },
+    "/players/": {
+      "summary": "Players object",
+      "get": {
+        "tags": [
+          "PLAYERS"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlayerListItem"
+                  }
+                },
+                "examples": {
+                  "List of Players": {
+                    "value": [
+                      {
+                        "id": 47,
+                        "name": "some text"
+                      },
+                      {
+                        "id": 40,
+                        "name": "some text"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Get all player names"
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlayer"
+              },
+              "examples": {
+                "NewPlayer": {
+                  "value": {
+                    "name": "some text"
+                  }
+                },
+                "PlayerWithoutPrice": {
+                  "value": {
+                    "name": "some text"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "PLAYERS"
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Location of created object"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Player"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Add new player"
+      }
+    },
+    "/players/{id}/": {
+      "summary": "Deal with Player object",
+      "get": {
+        "tags": [
+          "PLAYERS"
+        ],
+        "parameters": [
+          {
+            "examples": {
+              "First": {
+                "value": "1"
+              }
+            },
+            "name": "id",
+            "description": "Id of the player being requested",
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Player"
+                },
+                "examples": {
+                  "One Player": {
+                    "value": {
+                      "id": 36,
+                      "name": "some text"
+                    }
+                  },
+                  "Player without price": {
+                    "value": {
+                      "id": 61,
+                      "name": "some text"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "InvalidID": {
+                    "value": {
+                      "error": "ID must be a whole number: ab12"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Invalid request path parameter\n"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NotFound": {
+                    "value": {
+                      "error": "Player Not Found!"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Player with given id does not exist"
+          }
+        },
+        "summary": "Get the player with given id"
+      },
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlayer"
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "PLAYERS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Id of the player to be modified",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Player"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Modify existing player"
+      },
+      "delete": {
+        "tags": [
+          "PLAYERS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Id of player to be deleted",
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Player deleted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "IdError": {
+                    "value": {
+                      "error": "ID must be a whole number: esimene"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Incorrect Id"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "NotFound": {
+                    "value": {
+                      "error": "Player Not Found!"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Player not found"
+          }
+        },
+        "summary": "Remove a player"
+      }
     }
   },
   "components": {
@@ -344,6 +607,58 @@
             "description": "",
             "type": "number"
           }
+        }
+      },
+      "PlayerListItem": {
+        "title": "Root Type for GameListItem",
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": "Kristjan"
+        }
+      },
+      "NewPlayer": {
+        "description": "Player to be saved",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Must contain atleast one non-whitespace character",
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "some text"
+        }
+      },
+      "Player": {
+        "title": "Root Type for Game",
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 88,
+          "name": "some text"
         }
       }
     }
